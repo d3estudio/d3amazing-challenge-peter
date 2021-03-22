@@ -16,11 +16,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+from api.csv_export import export_csv
+
 from api.urls import router
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/', include('api.urls')),
     path('api/v2/', include(router.urls)),
-    path('auth/', include('rest_framework.urls'))
+    path('auth/', include('rest_framework.urls')),
+    path('export-csv/', export_csv, name='export-csv')
 ]
