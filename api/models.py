@@ -4,11 +4,15 @@ from django.db import models
 
 class Base(models.Model):
 
-    data_created=models.DateTimeField(auto_now_add=True)
+    data_created=models.DateField(auto_now_add=True)
 
     class Meta:
 
         abstract = True
+
+    def __str__(self):
+
+        return self.slack_user_id
 
 class Role(Base):
 

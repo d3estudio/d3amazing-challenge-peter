@@ -52,5 +52,5 @@ class ScoreSerializers(serializers.ModelSerializer):
             "score_technical",
             "score_social",
             "data_created",
-            "scoresUser_id"
+            "scoresUser"
         )
