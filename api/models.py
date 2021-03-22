@@ -25,19 +25,6 @@ class Role(Base):
 
         return self.role.title()
 
-class Score(Base):
-
-    sender = models.CharField(max_length=60)
-    receiver = models.CharField(max_length=60)
-    score_technical = models.DecimalField(max_digits=1, decimal_places=0)
-    score_social = models.DecimalField(max_digits=1, decimal_places=0)
-
-    class Meta:
-
-        verbose_name = 'Score'
-        verbose_name_plural = 'Scores'
-        ordering = ['id']
-
 class User(Base):
 
     slack_user_id = models.CharField(max_length=60)
@@ -51,3 +38,21 @@ class User(Base):
         verbose_name_plural = 'Users'
         unique_together = ['slack_user_id']
         ordering = ['id']
+
+class Score(Base):
+
+    sender = models.CharField(max_length=60)
+    receiver = models.CharField(max_length=60)
+    score_technical = models.DecimalField(max_digits=1, decimal_places=0)
+    score_social = models.DecimalField(max_digits=1, decimal_places=0)
+    scoresUser = models.ForeignKey(User, related_name='scoresUser', on_delete=models.CASCADE)
+
+    class Meta:
+
+        verbose_name = 'Score'
+        verbose_name_plural = 'Scores'
+        ordering = ['id']
+
+    def __str__(self):
+
+        return self.sender

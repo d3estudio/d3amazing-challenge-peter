@@ -33,26 +33,10 @@ class UsersAPIView(generics.ListCreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializers
 
-    def get_queryset(self):
-
-        if self.kwargs.get('roles_pk'):
-
-            return self.queryset.filter(roles_id=self.kwargs.get('roles_pk'))
-
-        return self.queryset.all()
-
 class UserAPIView(generics.RetrieveUpdateDestroyAPIView):
 
     queryset = User.objects.all()
     serializer_class = UserSerializers
-
-    def get_object(self):
-
-        if self.kwargs.get('roles_pk'):
-
-            return get_object_or_404(self.get_queryset(), roles_id=self.kwargs.get('roles_pk'), pk=self.kwargs.get('user_pk'))
-
-        return get_object_or_404(self.get_queryset(), pk=self.kwargs.get('user_pk'))
 
 class RoleViewSet(viewsets.ModelViewSet):
 
@@ -79,26 +63,21 @@ class RoleViewSet(viewsets.ModelViewSet):
 
         return Response(serializer.data)
 
-class UserViewSet(
-                    mixins.ListModelMixin, 
-                    mixins.CreateModelMixin, 
-                    mixins.RetrieveModelMixin, 
-                    mixins.UpdateModelMixin, 
-                    mixins.DestroyModelMixin, 
-                    viewsets.GenericViewSet
-                ):
+class UserViewSet(viewsets.ModelViewSet):
 
     queryset = User.objects.all()
     serializer_class = UserSerializers
 
-class ScoreViewSet(
-                    mixins.ListModelMixin, 
-                    mixins.CreateModelMixin, 
-                    mixins.RetrieveModelMixin, 
-                    mixins.UpdateModelMixin, 
-                    mixins.DestroyModelMixin, 
-                    viewsets.GenericViewSet
-                ):
+    @action(detail=True, methods=['get'])
+    def scoresUser(self, request, pk=None):
+
+        scoresUser = Score.objects.filter(scoresUser_id=pk)
+
+        serializer = ScoreSerializers(scoresUser, many=True)
+
+        return Response(serializer.data)
+
+class ScoreViewSet(viewsets.ModelViewSet):
 
     queryset = Score.objects.all()
     serializer_class = ScoreSerializers
