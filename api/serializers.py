@@ -10,12 +10,6 @@ class RoleSerializers(serializers.ModelSerializer):
 
     class Meta:
 
-        # extra_kwargs = {
-        #     'role': {
-        #         'write_only': True
-        #     }
-        # }
-
         model = Role
 
         fields = (
@@ -23,6 +17,26 @@ class RoleSerializers(serializers.ModelSerializer):
             "role",
             "data_created",
             "users"
+        )
+
+class UserSerializers(serializers.ModelSerializer):
+
+    scoresUser = serializers.HyperlinkedRelatedField(
+        many=True, read_only=True, view_name='score-detail'
+    )
+
+    class Meta:
+
+        model = User
+
+        fields = (
+            'id',
+            'slack_user_id',
+            'role',
+            'active',
+            'data_created',
+            'data_updated',
+            'scoresUser'
         )
 
 class ScoreSerializers(serializers.ModelSerializer):
@@ -37,26 +51,6 @@ class ScoreSerializers(serializers.ModelSerializer):
             "receiver",
             "score_technical",
             "score_social",
-            "data_created"
-        )
-
-class UserSerializers(serializers.ModelSerializer):
-
-    class Meta:
-
-        # extra_kwargs = {
-        #     'slack_user_id': {
-        #         'write_only': True
-        #     }
-        # }
-
-        model = User
-
-        fields = (
-            'id',
-            'slack_user_id',
-            'role',
-            'active',
-            'data_created',
-            'data_updated'
+            "data_created",
+            "scoresUser_id"
         )
