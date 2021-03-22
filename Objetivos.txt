@@ -1,0 +1,70 @@
+## Missão
+
+> Dar vida ao nosso querido robô, o Peter, que é o responsável por colher mensalmente a avaliação 360 de todos os membros da equipe
+
+## Repositório
+
+https://github.com/d3estudio/d3amazing-challenge-peter
+
+## Infra
+
+**1. Docker-compose
+
+2. Digital Ocean
+
+3. Github Actions**
+
+**4. Database**: não esquecer de mapear o volume da pasta de dados para fora do container para não ser apagado caso a máquina seja reinicializada
+
+**5. Boot**: é importante nossa aplicação subir sozinha quando a máquina for reinicializada
+
+## Arquitetura
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/f66ca23c-3129-4ac1-b606-37743789ca21/avaliacao-360-arquitetura.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/f66ca23c-3129-4ac1-b606-37743789ca21/avaliacao-360-arquitetura.png)
+
+`API`
+
+Responsável por toda a regra de negócio e pela integração com o banco de dados
+
+**SCORES
+—————————**
+ID
+sender
+receiver
+score_technical
+score_social
+data_created
+
+**USERS
+—————————**
+ID
+slack_user_id
+role (user, admin, founder)
+active (true ou false)
+data_created
+data_updated
+
++
+
+`Bot Slack`
+
+É uma interface de comunicação e vai permitir comandos para 3 diferentes "Roles", usuário, admin e founder.
+
+**Usuário:**
+- Avaliar colega
+- Resumo das avaliações que eu fiz no mês
+- Minhas médias
+
+**Admin:**
+- Tem todas as permissões de usuário
+- Listar quem enviou avaliação em um determinado mês
+- Pedir o CSV com todas as avaliações de um determinado mês
+- Adicionar novo usuário
+- Ativar/ usuário
+- Listar usuários
+
+**Founder:**
+- Tem todas as permissões de usuário e admin
+- Pode mudar o role de qualquer usuário para admin ou usuário
+
+Ps.: O único usuário com role de Founder será "@joaomarcos"
