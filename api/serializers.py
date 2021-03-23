@@ -4,6 +4,7 @@ from .models import Role, Score, User
 
 class RoleSerializers(serializers.ModelSerializer):
 
+    data_created = serializers.DateTimeField(format="%d/%m/%Y")
     users = serializers.HyperlinkedRelatedField(
         many=True, read_only=True, view_name='user-detail'
     )
@@ -21,6 +22,9 @@ class RoleSerializers(serializers.ModelSerializer):
 
 class UserSerializers(serializers.ModelSerializer):
 
+    data_created = serializers.DateTimeField(format="%d/%m/%Y")
+    data_updated = serializers.DateTimeField(format="%d/%m/%Y")
+    
     scoresUser = serializers.HyperlinkedRelatedField(
         many=True, read_only=True, view_name='score-detail'
     )
@@ -41,6 +45,7 @@ class UserSerializers(serializers.ModelSerializer):
 
 class ScoreSerializers(serializers.ModelSerializer):
 
+    data_created = serializers.DateTimeField(format="%d/%m/%Y")
     class Meta:
 
         model = Score
