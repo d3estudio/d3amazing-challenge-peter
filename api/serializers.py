@@ -15,7 +15,6 @@ class RoleSerializers(serializers.ModelSerializer):
         fields = (
             "id",
             "role",
-            "data_created",
             "users"
         )
 
@@ -34,8 +33,6 @@ class UserSerializers(serializers.ModelSerializer):
             'slack_user_id',
             'role',
             'active',
-            'data_created',
-            'data_updated',
             'scoresUser'
         )
 
@@ -51,6 +48,5 @@ class ScoreSerializers(serializers.ModelSerializer):
             "receiver",
             "score_technical",
             "score_social",
-            "data_created",
             "scoresUser"
         )
