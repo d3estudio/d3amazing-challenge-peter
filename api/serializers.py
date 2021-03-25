@@ -32,16 +32,9 @@ class UserSerializers(serializers.ModelSerializer):
     scoresUser = serializers.HyperlinkedRelatedField(
         many=True, read_only=True, view_name='score-detail'
     )
-    avg_score_tech = serializers.HyperlinkedRelatedField(
-        many=True, read_only=True, view_name='avg_tech-detail'
-    )
-    avg_score_social = serializers.HyperlinkedRelatedField(
-        many=True, read_only=True, view_name='avg_social-detail'
-    )
+    avg_score_tech = serializers.SerializerMethodField()
+    avg_score_social = serializers.SerializerMethodField()
     
-    # avg_score_tech = Score.objects.all().aggregate(Avg('score_technical'))
-    # avg_score_social = Score.objects.all().aggregate(Avg('score_social'))
-    # user_id_slack = User.objects.get('slack_user_id')
 
     # succes print 4.5000
     # will get all the items from the Score object
@@ -65,7 +58,15 @@ class UserSerializers(serializers.ModelSerializer):
             'avg_score_social',
             'scoresUser'
         )
+    # this function has have the same name of avg_score_tech with get 
+    def get_avg_score_tech(self, obj):
+        average_tech = Score.objects.all().aggregate(Avg('score_technical')).get('score_technical__avg')
+       
+        return average_tech
 
+    def get_avg_score_social(self, obj):
+        average_social = Score.objects.all().aggregate(Avg('score_social')).get('score_social__avg')
+        return average_social
 class ScoreSerializers(serializers.ModelSerializer):
 
     data_created = serializers.DateTimeField(format="%d/%m/%Y")

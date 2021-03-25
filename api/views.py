@@ -75,27 +75,12 @@ class UserViewSet(viewsets.ModelViewSet):
 
         score = Score.objects.filter(scoreUser=pk)
 
-        serializer = ScoreSerializers(score, many=True)
+        serializer = ScoreSerializers(score)
 
         return Response(serializer.data)
 
 
-    @action(detail=True, methods=['get'])
-    def avg_tech(self, request, pk=None):
-        
-        slack_id = User.objects.get('slack_user_id')
-
-        receiver = Score.objects.get(receiver)
-
-        avg_score_tech = Score.objects.all().aggregate(Avg('score_technical')).get('score_technical__avg')
-
-        serializer = UserSerializers(avg_score_tech, many=True)
-
-        print(serializer, 'SERIALIZER HERE')
-
-        # if slack_id == receiver:
-
-        return Response(serializer.data)
+  
     
 
     @action(detail=True, methods=['get'])
