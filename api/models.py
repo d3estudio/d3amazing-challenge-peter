@@ -1,10 +1,17 @@
 from django.db import models
+from datetime import date
 
 # Create your models here.
 
 class Base(models.Model):
 
-    data_created=models.DateField(auto_now_add=True)
+    def data():
+
+        data_atual = date.today().strftime('20%y-%m')
+
+        return f"{data_atual}"
+
+    data_created = models.CharField(max_length=10, default=data)
 
     class Meta:
 

@@ -7,6 +7,8 @@ from rest_framework.generics import get_object_or_404
 
 from .models import Role, Score, User
 from .serializers import RoleSerializers, ScoreSerializers, UserSerializers
+from datetime import date
+
 class RolesAPIView(generics.ListCreateAPIView):
 
     queryset = Role.objects.all()
@@ -67,16 +69,20 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializers
 
-    @action(detail=True, methods=['get'])
-    def score(self, request, pk=None):
+    # @action(detail=True, methods=['get'])
+    # def score(self, request, pk=None):
 
-        score = Score.objects.filter(scoreUser=pk)
+    #     data = date.today().strftime('20%y-%m')
 
-        serializer = ScoreSerializers(score, many=True)
+    #     score = Score.objects.filter(scoreUser=pk)
 
-        return Response(serializer.data)
+    #     serializer = ScoreSerializers(score, many=True)
+
+    #     return Response(serializer.data)
 
 class ScoreViewSet(viewsets.ModelViewSet):
 
-    queryset = Score.objects.all()
+    data = date.today().strftime('20%y-%m')
+
+    queryset = Score.objects.filter(data_created=data)
     serializer_class = ScoreSerializers
