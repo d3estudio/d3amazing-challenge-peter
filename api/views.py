@@ -7,6 +7,9 @@ from rest_framework.generics import get_object_or_404
 
 from .models import Role, Score, User
 from .serializers import RoleSerializers, ScoreSerializers, UserSerializers
+
+# to find thje 
+from django.db.models import Avg, Count
 class RolesAPIView(generics.ListCreateAPIView):
 
     queryset = Role.objects.all()
@@ -72,9 +75,29 @@ class UserViewSet(viewsets.ModelViewSet):
 
         score = Score.objects.filter(scoreUser=pk)
 
-        serializer = ScoreSerializers(score, many=True)
+        serializer = ScoreSerializers(score)
 
         return Response(serializer.data)
+
+
+  
+    
+
+    @action(detail=True, methods=['get'])
+    def avg_social(self, request, pk=None):
+        
+        slack_id = User.objects.get(slack_user_id)
+
+        receiver = Score.objects.get(receiver)
+
+        avg_score_social = Score.objects.all().aggregate(Avg('score_social')).get('score_social__avg')
+
+        serializer = UserSerializers(avg_score_social, many=True)
+
+        if slack_id == receiver:
+
+            return Response(serializer.data)
+
 
 class ScoreViewSet(viewsets.ModelViewSet):
 
